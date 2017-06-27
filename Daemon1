@@ -1,0 +1,37 @@
+  2 #include <unistd.h>
+  3 #include <signal.h>
+  4 #include <stdlib.h>
+  5 #include <fcntl.h>
+  6 #include <sys/stat.h>
+  7 
+  8 void mydaemon()
+  9 {
+ 10     int fd0;
+ 11     pid_t pid;
+ 12     umask(0);   //first, set umask
+ 13     if((pid=fork())==0)//second,creat child process
+ 14     {}
+ 15     else if(pid!=0)
+ 16     {
+ 17         exit(0);//stop father process
+ 18     }   
+ 19        setsid();//third,creat new session
+ 20      chdir("/"); //change root catalogue
+ 21      close(0);
+ 22      fd0=open("/dev/null",O_RDWR);
+ 23      dup2(fd0,1);
+ 24      dup2(fd0,2);
+ 25      signal(SIGCHLD,SIG_IGN);
+ 26      if((pid=fork())<0)//再次fork，终止父进程，保证子进程不是话首进程，保证后续不会再和其他终端关联
+ 27      {}
+ 28      else if(pid!=0)
+ 29      {
+ 30          exit(0);
+ 31      }
+ 32 }
+ 33 
+ 34 void main()
+ 35 {
+ 36     mydaemon();
+ 37     while(1);
+ 38 }
