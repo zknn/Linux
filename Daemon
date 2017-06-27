@@ -1,0 +1,33 @@
+  1 #include <stdio.h>
+  2 #include <unistd.h>
+  3 #include <signal.h>
+  4 #include <stdlib.h>
+  5 #include <fcntl.h>
+  6 #include <sys/stat.h>
+  7 
+  8 void mydaemon()
+  9 {
+ 10     pid_t pid;
+ 11     umask(0);   //first, set umask
+ 12     if((pid=fork())==0)//second,creat child process
+ 13     {}
+ 14     else if(pid!=0)
+ 15     {
+ 16         exit(0);//stop father process
+ 17     }
+ 18        setsid();//third,creat new session
+ 19      chdir("/"); //change root catalogue
+ 20      close(0);
+ 21      close(1); 
+ 22      close(2);
+ 23      signal(SIGCHLD,SIG_IGN); 
+ 24 }
+ 25 
+ 26 void main()
+ 27 {
+ 28     mydaemon();
+ 29     while(1);
+ 30 }
+ 31 
+
+                                                              1,5           Top
