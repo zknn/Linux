@@ -1,0 +1,14 @@
+#!/bin/bash
+
+i=0
+str=''
+lable=('|' '/' '-' '\\')
+while [ $i -le 100 ]
+	do
+		let index=i%4
+		printf "[\e[31;47;1m %-100s\e[0m][%d%%][%c]\r" "$str" "$i" "${lable[$index]}"
+		str='#'$str
+		sleep 0.1
+		let i++
+	done
+printf "\n"
